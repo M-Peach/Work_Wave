@@ -1,0 +1,86 @@
+﻿@model Work_Wave.Models.Ticket
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Ticket</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CFirstName" class="control-label"></label>
+                <input asp-for="CFirstName" class="form-control" />
+                <span asp-validation-for="CFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CLastName" class="control-label"></label>
+                <input asp-for="CLastName" class="form-control" />
+                <span asp-validation-for="CLastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CPhone" class="control-label"></label>
+                <input asp-for="CPhone" class="form-control" />
+                <span asp-validation-for="CPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CAddress" class="control-label"></label>
+                <input asp-for="CAddress" class="form-control" />
+                <span asp-validation-for="CAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CCity" class="control-label"></label>
+                <input asp-for="CCity" class="form-control" />
+                <span asp-validation-for="CCity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CState" class="control-label"></label>
+                <input asp-for="CState" class="form-control" />
+                <span asp-validation-for="CState" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CZip" class="control-label"></label>
+                <input asp-for="CZip" class="form-control" />
+                <span asp-validation-for="CZip" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Schedule" class="control-label"></label>
+                <input asp-for="Schedule" class="form-control" />
+                <span asp-validation-for="Schedule" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PriorityId" class="control-label"></label>
+                <select asp-for="PriorityId" class ="form-control" asp-items="ViewBag.PriorityId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="TechnicianId" class="control-label"></label>
+                <select asp-for="TechnicianId" class ="form-control" asp-items="ViewBag.TechnicianId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
