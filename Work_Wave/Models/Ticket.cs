@@ -16,32 +16,32 @@ namespace Work_Wave.Models
         public string Description { get; set; }
 
         [Required]
-        [Display(Name = "Customer First Name")]
+        [Display(Name = "First Name")]
         public string CFirstName { get; set; }
 
         [Required]
-        [Display(Name = "Customer Last Name")]
+        [Display(Name = "Last Name")]
         public string CLastName { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [Required]
-        [Display(Name = "Customer Phone")]
+        [Display(Name = "Phone")]
         public string CPhone { get; set; }
 
         [Required]
-        [Display(Name = "Customer Address")]
+        [Display(Name = "Address")]
         public string CAddress { get; set; }
 
         [Required]
-        [Display(Name = "Customer City")]
+        [Display(Name = "City")]
         public string CCity { get; set; }
 
         [Required]
-        [Display(Name = "Customer State")]
+        [Display(Name = "State")]
         public string CState { get; set; }
 
         [Required]
-        [Display(Name = "Customer Zip")]
+        [Display(Name = "Zip")]
         public string CZip { get; set; }
 
         [DataType(DataType.Date)]

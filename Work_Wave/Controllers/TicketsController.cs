@@ -27,6 +27,7 @@ namespace Work_Wave.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Tickets.Include(t => t.Priority).Include(t => t.Support).Include(t => t.Technician);
+
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -48,7 +49,7 @@ namespace Work_Wave.Controllers
                 return NotFound();
             }
 
-            return View(ticket);
+                return View(ticket);
         }
 
         // GET: Tickets/Create
@@ -94,9 +95,9 @@ namespace Work_Wave.Controllers
             {
                 return NotFound();
             }
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Id", ticket.PriorityId);
-            ViewData["SupportId"] = new SelectList(_context.Users, "Id", "Id", ticket.SupportId);
-            ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "Id", ticket.TechnicianId);
+            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
+            ViewData["SupportId"] = new SelectList(_context.Users, "Id", "FullName", ticket.SupportId);
+            ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName", ticket.TechnicianId);
             return View(ticket);
         }
 
@@ -105,7 +106,7 @@ namespace Work_Wave.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CAddress2,CCity,CState,CZip,Created,Schedule,IsArchived,PriorityId,TechnicianId,SupportId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CAddress2,CCity,CState,CZip,Schedule,IsArchived,PriorityId,TechnicianId,SupportId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -132,9 +133,9 @@ namespace Work_Wave.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Id", ticket.PriorityId);
-            ViewData["SupportId"] = new SelectList(_context.Users, "Id", "Id", ticket.SupportId);
-            ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "Id", ticket.TechnicianId);
+            ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
+            ViewData["SupportId"] = new SelectList(_context.Users, "Id", "FullName", ticket.SupportId);
+            ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName", ticket.TechnicianId);
             return View(ticket);
         }
 
@@ -165,7 +166,45 @@ namespace Work_Wave.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ticket = await _context.Tickets.FindAsync(id);
-            _context.Tickets.Remove(ticket);
+
+            ticket.IsArchived = true;
+
+            _context.Tickets.Update(ticket);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Tickets/Retore/5
+        public async Task<IActionResult> Restore(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var ticket = await _context.Tickets
+                .Include(t => t.Priority)
+                .Include(t => t.Support)
+                .Include(t => t.Technician)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (ticket == null)
+            {
+                return NotFound();
+            }
+
+            return View(ticket);
+        }
+
+        // POST: Tickets/Restore/5
+        [HttpPost, ActionName("Restore")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RestoreConfirmed(int id)
+        {
+            var ticket = await _context.Tickets.FindAsync(id);
+
+            ticket.IsArchived = false;
+
+            _context.Tickets.Update(ticket);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
