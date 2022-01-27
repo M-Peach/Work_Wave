@@ -31,6 +31,37 @@ namespace Work_Wave.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // GET: Tickets - MY TICKETS
+        public async Task<IActionResult> MyTickets()
+        {
+            var applicationDbContext = _context.Tickets.Include(t => t.Priority).Include(t => t.Support).Include(t => t.Technician);
+
+            WaveUser user = await _userManager.GetUserAsync(User);
+
+            List<Ticket> tickets = new List<Ticket>();
+
+            foreach (var t in applicationDbContext)
+            {
+                if (t.SupportId == user.Id)
+                {
+                    tickets.Add(t);
+                }
+                else if (t.TechnicianId == user.Id)
+                {
+                    tickets.Add(t);
+                }
+            }
+            return View(tickets);
+        }
+
+        // GET: Tickets - ADMIN VIEW
+        public async Task<IActionResult> Admin()
+        {
+            var applicationDbContext = _context.Tickets.Include(t => t.Priority).Include(t => t.Support).Include(t => t.Technician);
+
+            return View(await applicationDbContext.ToListAsync());
+        }
+
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
