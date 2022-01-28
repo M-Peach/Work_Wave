@@ -12,7 +12,7 @@ using Work_Wave.Data;
 namespace Work_Wave.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220127164704_Inital")]
+    [Migration("20220128055731_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -219,10 +219,6 @@ namespace Work_Wave.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("CAddress2")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("CCity")
                         .IsRequired()
                         .HasColumnType("text");
@@ -247,7 +243,7 @@ namespace Work_Wave.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTimeOffset>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
@@ -260,7 +256,7 @@ namespace Work_Wave.Data.Migrations
                     b.Property<int>("PriorityId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("Schedule")
+                    b.Property<DateTimeOffset>("Schedule")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SupportId")

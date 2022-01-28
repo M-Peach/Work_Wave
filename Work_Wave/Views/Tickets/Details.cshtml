@@ -1,14 +1,18 @@
 ﻿@model Work_Wave.Models.Ticket
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<WaveUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
-}
 
+    WaveUser waveUser = await UserManager.GetUserAsync(User);
+}
 <h1>
     <div style='text-align:right'>
         <a asp-action="MyTickets"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Directions</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
     </div>
 </h1>
+
 
 <div>
     <div classxfont-weighteighteightgetainer-fluid">
@@ -37,12 +41,44 @@
                     </div>
                 </div>
             </div>
+             </div>
+              </div>
+               </div>
 
 
             <div class="card text-white bg-primary mb-3">
                 <div class="card-header">Comments</div>
                 <div class="card-body">
-                    <h4 class="card-title">Primary card title</h4>
+                    <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
+                        <input type="hidden" asp-for="Id" name="TicketId" />
+                        @if(Model.TechnicianId == waveUser.Id || Model.SupportId == waveUser.Id)
+                        {
+                        <div class="form-group">
+                            <textarea asp-for="@(new Comment().Note)" rows="8" class="form-control" required placeholder="Add Comment ..."></textarea>
+                        </div>
+                            <button class="btn btn-info">Submit</button>
+                        }
+                        else
+                        {
+                        <div class="form-group">
+                            <textarea disabled asp-for="@(new Comment().Note)" rows="8" class="form-control" required placeholder="Add Comment ..."></textarea>
+                       </div>
+                        }
+                    </form>
+                    <h4 class="card-title">Comments</h4>
+        @foreach(Comment comment in Model.Notes)
+        {
+                            <div>
+                            <span class="text-muted" style="font-:x-small;">
+                            @comment.User.FullName
+                            <small class="float-right">@comment.Created.ToString("MM.dd.yyyy - h:ss tt")</small>:
+                            </span>
+                            <div>
+                            <span class="message text-primary">@Html.Raw(comment.Note)</span>
+                            </div> 
+                            </div>
+    
+        }
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
             </div>
@@ -51,5 +87,3 @@
             </div>
 
         </div>
-    </div>
-</div>

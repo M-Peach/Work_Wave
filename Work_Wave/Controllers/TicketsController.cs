@@ -76,6 +76,7 @@ namespace Work_Wave.Controllers
                 .Include(t => t.Technician)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            WaveUser user = await _userManager.GetUserAsync(User);
 
             if (ticket == null)
             {
@@ -170,6 +171,22 @@ namespace Work_Wave.Controllers
             return View(ticket);
         }
 
+        // Ticket Comment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTicketComment([Bind("Id, TicketId, Note")] Comment comment)
+        {
+
+                comment.UserId = _userManager.GetUserId(User);
+
+                comment.Created = DateTimeOffset.Now;
+
+                await _context.AddAsync(comment);
+                await _context.SaveChangesAsync();
+    
+
+            return RedirectToAction("Details", new { id = comment.Id });
+        }
         // GET: Tickets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
