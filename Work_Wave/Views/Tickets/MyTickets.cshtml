@@ -46,9 +46,6 @@
                 @Html.DisplayNameFor(model => model.Schedule)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsArchived)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Priority)
             </th>
             <th>
@@ -63,62 +60,58 @@
     <tbody>
 @foreach (var item in Model) {
 
-            if (item.IsArchived == false)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CFirstName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CLastName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CPhone)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CAddress)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CCity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CState)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CZip)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Created)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Schedule)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsArchived)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Priority.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Technician.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Support.FullName)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>   
-             }
-            </td>
-        </tr>
-        }
+  if (item.IsArchived == false)
+  {
+    <tr>
+        <td>
+        @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.CFirstName)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.CLastName)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.CPhone)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.CAddress)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.CCity)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.CState)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.CZip)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.Created)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.Schedule)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.Priority.Name)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.Technician.FullName)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.Support.FullName)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Archive</a>     
+        </td>
+     </tr>
+   }
 }
-    </tbody>
+</tbody>
 </table>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Work_Wave.Models
 {
@@ -54,6 +55,16 @@ namespace Work_Wave.Models
 
         [Display(Name = "Archived")]
         public bool IsArchived { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Phone Number")]
+        public string FormatedPhone { get { return String.Format("{0:(###) ###-####}", Convert.ToInt64(CPhone)); } }
+        [NotMapped]
+        public string NumberStreet { get { return CAddress.Replace(" ", "+"); } }
+
+        [NotMapped]
+        [Display(Name = "Address Link")]
+        public string AddressLink { get { return $"https://google.com/maps/search/{NumberStreet}+{CCity}+{CState}+{CZip}"; } }
 
 
         // Below Referances Priority, Status, Comment

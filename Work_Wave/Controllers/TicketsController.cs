@@ -75,6 +75,8 @@ namespace Work_Wave.Controllers
                 .Include(t => t.Support)
                 .Include(t => t.Technician)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+
             if (ticket == null)
             {
                 return NotFound();
