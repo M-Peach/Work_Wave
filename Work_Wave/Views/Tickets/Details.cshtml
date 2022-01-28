@@ -5,7 +5,9 @@
 }
 
 <h1>
-Ticket Details:
+	<div style='text-align:right'>
+<a asp-action="MyTickets"><button type="button" class="btn btn-primary" >Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary" >Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info" >Directions</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger" >Archive</button></a>
+</div>
 </h1>
 
   <div>
