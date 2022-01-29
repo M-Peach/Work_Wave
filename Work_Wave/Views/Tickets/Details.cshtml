@@ -7,18 +7,17 @@
 
     WaveUser waveUser = await UserManager.GetUserAsync(User);
 }
-<h1>
-    <div style='text-align:right'>
-        <a asp-action="MyTickets"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Directions</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
-    </div>
-</h1>
-
+    
 
 <div>
     <div classxfont-weighteighteightgetainer-fluid">
         <div class="row gy-2">
             <div class="col-md-12 col">
                 <div class="row col-cols-2 mt-5">
+                        <div style='text-align:right'>
+        <a asp-action="MyTickets"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Directions</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+    </div>
+    
                     <div class="card col m-1 p-2 border-primary mb-3">
                         <div class="card-body">
                             @*Title of Ticket*@
@@ -54,32 +53,35 @@
                         @if(Model.TechnicianId == waveUser.Id || Model.SupportId == waveUser.Id)
                         {
                         <div class="form-group">
-                            <textarea asp-for="@(new Comment().Note)" rows="8" class="form-control" required placeholder="Add Comment ..."></textarea>
+                            <textarea asp-for="@(new Comment().Note)" rows="4" class="form-control" required placeholder="Add Comment ..."></textarea>
                         </div>
-                            <button class="btn btn-info">Submit</button>
+                        <hr style="width:0%; text-align:left;margin-left:0">
+                            <button class="btn btn-warning text-muted"><b>Submit</b></button>
+                        <hr style="width:0%; text-align:left;margin-left:0">
                         }
                         else
                         {
                         <div class="form-group">
-                            <textarea disabled asp-for="@(new Comment().Note)" rows="8" class="form-control" required placeholder="Add Comment ..."></textarea>
+                            <textarea disabled asp-for="@(new Comment().Note)" rows="4" class="form-control" required placeholder="Add Comment ..."></textarea>
                        </div>
                         }
                     </form>
-                    <h4 class="card-title">Comments</h4>
-        @foreach(Comment comment in Model.Notes)
-        {
+                    <h4 class="card-title, text-muted">Comments</h4>
+                    <hr style="width:0%; text-align:left;margin-left:0">
+                    @foreach(Comment comment in Model.Comments)
+                    {
+            
                             <div>
-                            <span class="text-muted" style="font-:x-small;">
+                            <span class="text-muted">
                             @comment.User.FullName
-                            <small class="float-right">@comment.Created.ToString("MM.dd.yyyy - h:ss tt")</small>:
+                            <small class="float-right">@comment.Created.ToString("MM/dd/yyyy - H:mm")</small>
                             </span>
                             <div>
-                            <span class="message text-primary">@Html.Raw(comment.Note)</span>
+                            <span class ="text-muted"><b>@Html.Raw(comment.Note)</b></span>
                             </div> 
+                            <hr>
                             </div>
-    
-        }
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                  }
                 </div>
             </div>
 

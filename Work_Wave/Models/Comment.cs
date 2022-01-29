@@ -6,8 +6,8 @@ namespace Work_Wave.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Work Order")]
-        public int OrderId { get; set; }
+        [Display(Name = "Ticket Id")]
+        public int TicketId { get; set; }
 
         [Display(Name = "Comment")]
         public string Note { get; set; }

@@ -12,7 +12,7 @@ using Work_Wave.Data;
 namespace Work_Wave.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220128055731_Inital")]
+    [Migration("20220129025619_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,9 +170,6 @@ namespace Work_Wave.Data.Migrations
                     b.Property<string>("Note")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("TicketId")
                         .HasColumnType("integer");
@@ -409,7 +406,7 @@ namespace Work_Wave.Data.Migrations
             modelBuilder.Entity("Work_Wave.Models.Comment", b =>
                 {
                     b.HasOne("Work_Wave.Models.Ticket", "Ticket")
-                        .WithMany("Notes")
+                        .WithMany("Comments")
                         .HasForeignKey("TicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -454,7 +451,7 @@ namespace Work_Wave.Data.Migrations
 
             modelBuilder.Entity("Work_Wave.Models.Ticket", b =>
                 {
-                    b.Navigation("Notes");
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

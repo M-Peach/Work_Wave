@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Work_Wave.Data;
 using Work_Wave.Models;
+using Work_Wave.Services.Interfaces;
 
 namespace Work_Wave.Controllers
 {
@@ -16,11 +17,13 @@ namespace Work_Wave.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<WaveUser> _userManager;
+        private readonly ITTicketService _ticketService;
 
-        public TicketsController(ApplicationDbContext context, UserManager<WaveUser> userManager)
+        public TicketsController(ApplicationDbContext context, UserManager<WaveUser> userManager, ITTicketService ticketService)
         {
             _context = context;
             _userManager = userManager;
+            _ticketService = ticketService;
         }
 
         // GET: Tickets
@@ -70,13 +73,7 @@ namespace Work_Wave.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.Priority)
-                .Include(t => t.Support)
-                .Include(t => t.Technician)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            WaveUser user = await _userManager.GetUserAsync(User);
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
 
             if (ticket == null)
             {
@@ -174,18 +171,19 @@ namespace Work_Wave.Controllers
         // Ticket Comment
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTicketComment([Bind("Id, TicketId, Note")] Comment comment)
+        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Note")] Comment comment)
         {
+            comment.UserId = _userManager.GetUserId(User);
+            comment.Created = DateTimeOffset.Now;
 
-                comment.UserId = _userManager.GetUserId(User);
 
-                comment.Created = DateTimeOffset.Now;
+            await _ticketService.AddTicketCommentAsync(comment);
 
-                await _context.AddAsync(comment);
-                await _context.SaveChangesAsync();
-    
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(comment.TicketId);
 
-            return RedirectToAction("Details", new { id = comment.Id });
+            ticket.Comments.Add(comment);
+
+            return RedirectToAction("Details", new { id = comment.TicketId });
         }
         // GET: Tickets/Delete/5
         public async Task<IActionResult> Delete(int? id)

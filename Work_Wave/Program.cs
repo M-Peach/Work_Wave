@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Work_Wave.Data;
 using Work_Wave.Models;
+using Work_Wave.Services;
+using Work_Wave.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,8 @@ builder.Services.AddIdentity<WaveUser, IdentityRole>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
+builder.Services.AddScoped<ITTicketService, TicketService>();
 
 var app = builder.Build();
 
