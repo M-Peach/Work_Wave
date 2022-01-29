@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Work_Wave.Data;
 using Work_Wave.Models;
+using Work_Wave.Services.Interfaces;
 
 namespace Work_Wave.Controllers
 {
@@ -16,11 +17,13 @@ namespace Work_Wave.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<WaveUser> _userManager;
+        private readonly ITTicketService _ticketService;
 
-        public TicketsController(ApplicationDbContext context, UserManager<WaveUser> userManager)
+        public TicketsController(ApplicationDbContext context, UserManager<WaveUser> userManager, ITTicketService ticketService)
         {
             _context = context;
             _userManager = userManager;
+            _ticketService = ticketService;
         }
 
         // GET: Tickets
@@ -70,12 +73,7 @@ namespace Work_Wave.Controllers
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .Include(t => t.Priority)
-                .Include(t => t.Support)
-                .Include(t => t.Technician)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(id.Value);
 
             if (ticket == null)
             {
@@ -139,15 +137,13 @@ namespace Work_Wave.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CAddress2,CCity,CState,CZip,Schedule,IsArchived,PriorityId,TechnicianId,SupportId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CCity,CState,CZip,Schedule,IsArchived,PriorityId,TechnicianId,SupportId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(ticket);
@@ -165,13 +161,30 @@ namespace Work_Wave.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
+
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
             ViewData["SupportId"] = new SelectList(_context.Users, "Id", "FullName", ticket.SupportId);
             ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName", ticket.TechnicianId);
             return View(ticket);
         }
 
+        // Ticket Comment
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Note")] Comment comment)
+        {
+            comment.UserId = _userManager.GetUserId(User);
+            comment.Created = DateTimeOffset.Now;
+
+
+            await _ticketService.AddTicketCommentAsync(comment);
+
+            Ticket ticket = await _ticketService.GetTicketByIdAsync(comment.TicketId);
+
+            ticket.Comments.Add(comment);
+
+            return RedirectToAction("Details", new { id = comment.TicketId });
+        }
         // GET: Tickets/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {

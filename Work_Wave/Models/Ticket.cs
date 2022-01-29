@@ -86,6 +86,6 @@ namespace Work_Wave.Models
 
         public virtual WaveUser Support { get; set; }
 
-        public virtual ICollection<Comment> Notes { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
     }
 }

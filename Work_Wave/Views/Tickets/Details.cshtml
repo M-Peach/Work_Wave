@@ -1,101 +1,91 @@
 ﻿@model Work_Wave.Models.Ticket
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<WaveUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
+
+    WaveUser waveUser = await UserManager.GetUserAsync(User);
 }
-
-<h1>Details</h1>
+    
 
 <div>
-    <h4>Ticket</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CFirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CFirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CLastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CLastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CPhone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FormatedPhone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CAddress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CAddress)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CCity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CCity)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CState)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CState)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CZip)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CZip)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Schedule)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Schedule)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Priority)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Priority.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Technician)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Technician.FullName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Support)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Support.FullName)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="MyTickets"><button type="button" class="btn btn-primary" >Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary" >Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info" >Directions</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger" >Archive</button></a>
-</div>
+    <div classxfont-weighteighteightgetainer-fluid">
+        <div class="row gy-2">
+            <div class="col-md-12 col">
+                <div class="row col-cols-2 mt-5">
+                        <div style='text-align:right'>
+        <a asp-action="MyTickets"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Directions</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+    </div>
+    
+                    <div class="card col m-1 p-2 border-primary mb-3">
+                        <div class="card-body">
+                            @*Title of Ticket*@
+                            <h5>@Model.Title</h5>
+                            @*Description of Ticket*@
+                            <p>@Model.Description</p>
+                        </div>
+                    </div>
+                    <div class="card col m-1 p-2 border-primary mb-3">
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                @*Ticket date*@
+                                <li><strong>Date Entered:</strong> <span class="">  @Model.Created.ToString("MMM dd, yyyy")</</span></li>
+                                @*Project end date*@
+                                <li><strong>Deadline:</strong> <span class="">  @Model.Schedule.ToString("MMM dd, yyyy - H:mm EST")</</span></li>
+                                @*Ticket priority*@
+                                <li><strong>Priority:</strong> <span class="">  @Model.Priority.Name</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             </div>
+              </div>
+               </div>
+
+
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Comments</div>
+                <div class="card-body">
+                    <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
+                        <input type="hidden" asp-for="Id" name="TicketId" />
+                        @if(Model.TechnicianId == waveUser.Id || Model.SupportId == waveUser.Id)
+                        {
+                        <div class="form-group">
+                            <textarea asp-for="@(new Comment().Note)" rows="4" class="form-control" required placeholder="Add Comment ..."></textarea>
+                        </div>
+                        <hr style="width:0%; text-align:left;margin-left:0">
+                            <button class="btn btn-warning text-muted"><b>Submit</b></button>
+                        <hr style="width:0%; text-align:left;margin-left:0">
+                        }
+                        else
+                        {
+                        <div class="form-group">
+                            <textarea disabled asp-for="@(new Comment().Note)" rows="4" class="form-control" required placeholder="Add Comment ..."></textarea>
+                       </div>
+                        }
+                    </form>
+                    <h4 class="card-title, text-muted">Comments</h4>
+                    <hr style="width:0%; text-align:left;margin-left:0">
+                    @foreach(Comment comment in Model.Comments)
+                    {
+            
+                            <div>
+                            <span class="text-muted">
+                            @comment.User.FullName
+                            <small class="float-right">@comment.Created.ToString("MM/dd/yyyy - H:mm")</small>
+                            </span>
+                            <div>
+                            <span class ="text-muted"><b>@Html.Raw(comment.Note)</b></span>
+                            </div> 
+                            <hr>
+                            </div>
+                  }
+                </div>
+            </div>
+
+            <div class="card-footer">
+            </div>
+
+        </div>

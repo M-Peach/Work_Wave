@@ -182,12 +182,11 @@ namespace Work_Wave.Data.Migrations
                     CLastName = table.Column<string>(type: "text", nullable: false),
                     CPhone = table.Column<string>(type: "text", nullable: false),
                     CAddress = table.Column<string>(type: "text", nullable: false),
-                    CAddress2 = table.Column<string>(type: "text", nullable: false),
                     CCity = table.Column<string>(type: "text", nullable: false),
                     CState = table.Column<string>(type: "text", nullable: false),
                     CZip = table.Column<string>(type: "text", nullable: false),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Schedule = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Schedule = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     IsArchived = table.Column<bool>(type: "boolean", nullable: false),
                     PriorityId = table.Column<int>(type: "integer", nullable: false),
                     TechnicianId = table.Column<string>(type: "text", nullable: false),
@@ -222,11 +221,10 @@ namespace Work_Wave.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    TicketId = table.Column<int>(type: "integer", nullable: false),
                     Note = table.Column<string>(type: "text", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false),
-                    TicketId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

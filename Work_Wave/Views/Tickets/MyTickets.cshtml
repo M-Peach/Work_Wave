@@ -9,14 +9,12 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<div class="card text-white bg-primary mb-3">
+<table class="table text-muted">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CFirstName)
@@ -58,6 +56,7 @@
         </tr>
     </thead>
     <tbody>
+        </div>
 @foreach (var item in Model) {
 
   if (item.IsArchived == false)
@@ -67,16 +66,13 @@
         @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
         @Html.DisplayFor(modelItem => item.CFirstName)
         </td>
         <td>
         @Html.DisplayFor(modelItem => item.CLastName)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.CPhone)
+        @Html.DisplayFor(modelItem => item.FormatedPhone)
         </td>
         <td>
         @Html.DisplayFor(modelItem => item.CAddress)
@@ -100,15 +96,13 @@
         @Html.DisplayFor(modelItem => item.Priority.Name)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.Technician.FullName)
+        @Html.DisplayFor(modelItem => item.Technician.AbvName)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.Support.FullName)
+        @Html.DisplayFor(modelItem => item.Support.AbvName)
         </td>
         <td>
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Archive</a>     
+            <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning text-muted"><b>Select</b></button></a>   
         </td>
      </tr>
    }

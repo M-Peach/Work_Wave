@@ -23,7 +23,7 @@ namespace Work_Wave.Controllers
         // GET: Comments
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Comments.Include(c => c.User);
+            var applicationDbContext = _context.Comments.Include(c => c.Ticket).Include(c => c.User);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,6 +36,7 @@ namespace Work_Wave.Controllers
             }
 
             var comment = await _context.Comments
+                .Include(c => c.Ticket)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
@@ -49,6 +50,7 @@ namespace Work_Wave.Controllers
         // GET: Comments/Create
         public IActionResult Create()
         {
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress");
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -58,7 +60,7 @@ namespace Work_Wave.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderId,Note,Created,UserId")] Comment comment)
+        public async Task<IActionResult> Create([Bind("Id,TicketId,Note,Created,UserId")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -66,6 +68,7 @@ namespace Work_Wave.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress", comment.TicketId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
             return View(comment);
         }
@@ -83,6 +86,7 @@ namespace Work_Wave.Controllers
             {
                 return NotFound();
             }
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress", comment.TicketId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
             return View(comment);
         }
@@ -92,7 +96,7 @@ namespace Work_Wave.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,OrderId,Note,Created,UserId")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,TicketId,Note,Created,UserId")] Comment comment)
         {
             if (id != comment.Id)
             {
@@ -119,6 +123,7 @@ namespace Work_Wave.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress", comment.TicketId);
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comment.UserId);
             return View(comment);
         }
@@ -132,6 +137,7 @@ namespace Work_Wave.Controllers
             }
 
             var comment = await _context.Comments
+                .Include(c => c.Ticket)
                 .Include(c => c.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (comment == null)
