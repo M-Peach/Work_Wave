@@ -108,7 +108,7 @@ namespace Work_Wave.Controllers
 
             _context.Add(ticket);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyTickets));
 
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
             ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName", ticket.TechnicianId);
