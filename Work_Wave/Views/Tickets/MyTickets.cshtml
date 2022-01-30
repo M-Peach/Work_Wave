@@ -1,29 +1,56 @@
 ﻿@model IEnumerable<Work_Wave.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Tickets";
+    ViewData["Title"] = "Dashboard";
 }
 
-<h1>My Tickets</h1>
+<div>
+    <div classxfont-weighteighteightgetainer-fluid">
+        <div class="row gy-2">
+            <div class="col-md-12 col">
+                <div class="row col-cols-2 mt-5">
+                    <h1>Dashboard</h1>
+                                                <div style='text-align:right'>
+                                    <a asp-action="Create"><button type="button" class="btn btn-primary text-muted"><b>Create New Ticket</b></button></a>
+                                    <hr style="width:0%; text-align:left;margin-left:0">
+                                                                           
+<h5>Number of Tickets Assigned: <b>@Model.Count()</b></h5>
+                                        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<div class="card text-white bg-primary mb-3">
+@*                                                            <div class="card col m-1 p-2 border-primary mb-3">
+                        <div class="card-body">
+
+                            <h5>Number of Tickets Assigned: <b>@Model.Count()</b></h5>
+
+                            <p>Y</p>
+                        </div>
+                    </div>
+                    <div class="card col m-1 p-2 border-primary mb-3">
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+
+                                <li><strong>Priority:</strong> <span class="">  A</span></li>
+
+                                <li><strong>Date Created:</strong> <span class="">  B</</span></li>
+
+                                <li><strong>Scheduled Service For:</strong> <span class="">  C</</span></li>
+
+                                <li><strong>Address:</strong> <span class="">  D</span></li>
+                            </ul>
+                        </div>
+                    </div>*@
+
 <table class="table text-muted">
     <thead>
-        <tr>
+        <tr class="table-primary">
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CFirstName)
+                First
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CLastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CPhone)
+                Last
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CAddress)
@@ -41,7 +68,7 @@
                 @Html.DisplayNameFor(model => model.Created)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Schedule)
+                Scheduled For
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Priority)
@@ -57,11 +84,17 @@
     </thead>
     <tbody>
         </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
 @foreach (var item in Model) {
 
   if (item.IsArchived == false)
   {
-    <tr>
+        <tr>
         <td>
         @Html.DisplayFor(modelItem => item.Title)
         </td>
@@ -70,9 +103,6 @@
         </td>
         <td>
         @Html.DisplayFor(modelItem => item.CLastName)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.FormatedPhone)
         </td>
         <td>
         @Html.DisplayFor(modelItem => item.CAddress)
@@ -90,7 +120,7 @@
         @Html.DisplayFor(modelItem => item.Created)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.Schedule)
+        @Html.DisplayFor(modelItem => item.FormattedTime)
         </td>
         <td>
         @Html.DisplayFor(modelItem => item.Priority.Name)

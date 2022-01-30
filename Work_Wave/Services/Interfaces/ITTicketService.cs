@@ -10,5 +10,9 @@ namespace Work_Wave.Services.Interfaces
         public Task<Ticket> GetTicketByIdAsync(int ticketId);
 
         public Task AddTicketCommentAsync(Comment comment);
+
+        public Task<List<Ticket>> GetAllTicketsByPriorityAsync(string priorityName);
+
+        public Task<int?> LookupTicketPriorityIdAsync(string priorityName);
     }
 }

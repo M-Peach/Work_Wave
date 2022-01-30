@@ -47,6 +47,8 @@ namespace Work_Wave.Controllers
             {
                 if (t.SupportId == user.Id)
                 {
+                    t.FormattedTime = t.Schedule.ToString("MM/dd/yyyy - H:mm EST");
+
                     tickets.Add(t);
                 }
                 else if (t.TechnicianId == user.Id)
@@ -84,7 +86,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Tickets/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name");
             ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName");
@@ -106,7 +108,7 @@ namespace Work_Wave.Controllers
 
             _context.Add(ticket);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MyTickets));
 
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
             ViewData["TechnicianId"] = new SelectList(_context.Users, "Id", "FullName", ticket.TechnicianId);

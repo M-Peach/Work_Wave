@@ -66,6 +66,10 @@ namespace Work_Wave.Models
         [Display(Name = "Address Link")]
         public string AddressLink { get { return $"https://google.com/maps/search/{NumberStreet}+{CCity}+{CState}+{CZip}"; } }
 
+        [NotMapped]
+        [Display(Name = "Formatted Time")]
+        public string FormattedTime { get; set; }
+
 
         // Below Referances Priority, Status, Comment
 

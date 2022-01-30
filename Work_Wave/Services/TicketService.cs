@@ -62,5 +62,42 @@ namespace Work_Wave.Services
                 throw;
             }
         }
+
+        public async Task<List<Ticket>> GetAllTicketsByPriorityAsync(string priorityName)
+        {
+            int priorityId = (await LookupTicketPriorityIdAsync(priorityName)).Value;
+
+            try
+            {
+                List<Ticket> tickets = await _context.Tickets
+                    .Include(t => t.Comments)
+                    .Include(t => t.Technician)
+                    .Include(t => t.Support)
+                    .Include(t => t.Priority)
+                    .Where(t => t.PriorityId == priorityId)
+                    .ToListAsync();
+
+                return tickets;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<int?> LookupTicketPriorityIdAsync(string priorityName)
+        {
+            try
+            {
+                Priority priority = await _context.Priorities.FirstOrDefaultAsync(p => p.Name == priorityName);
+
+                return priority?.Id;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

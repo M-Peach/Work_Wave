@@ -29,12 +29,14 @@
                     <div class="card col m-1 p-2 border-primary mb-3">
                         <div class="card-body">
                             <ul class="list-unstyled">
-                                @*Ticket date*@
-                                <li><strong>Date Entered:</strong> <span class="">  @Model.Created.ToString("MMM dd, yyyy")</</span></li>
-                                @*Project end date*@
-                                <li><strong>Deadline:</strong> <span class="">  @Model.Schedule.ToString("MMM dd, yyyy - H:mm EST")</</span></li>
                                 @*Ticket priority*@
                                 <li><strong>Priority:</strong> <span class="">  @Model.Priority.Name</span></li>
+                                @*Ticket date*@
+                                <li><strong>Date Created:</strong> <span class="">  @Model.Created.ToString("MMM dd, yyyy")</</span></li>
+                                @*Project end date*@
+                                <li><strong>Scheduled Service For:</strong> <span class="">  @Model.Schedule.ToString("MMM dd, yyyy - H:mm EST")</</span></li>
+                                @*Address*@
+                                <li><strong>Address:</strong> <span class="">  @Model.CAddress @Model.CCity, @Model.CState, @Model.CZip</span></li>
                             </ul>
                         </div>
                     </div>
