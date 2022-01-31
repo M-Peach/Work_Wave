@@ -18,8 +18,8 @@ namespace Work_Wave.Models
         [Display(Name = "Full Name")]
         public string FullName { get { return $"{FirstName} {LastName}"; } }
 
-        [NotMapped]
-        [Display(Name = "Full Name")]
-        public string AbvName { get { return $"{FirstName.Substring(0, 1)}. {LastName}"; } }
+     //   [NotMapped]
+      //  public string AbvName { get { return $"{FirstName.Substring(0, 1)}. {LastName}"; } }
+
     }
 }

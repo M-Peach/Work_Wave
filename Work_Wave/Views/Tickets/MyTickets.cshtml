@@ -17,28 +17,6 @@
 <h5>Number of Tickets Assigned: <b>@Model.Count()</b></h5>
                                         </div>
 
-@*                                                            <div class="card col m-1 p-2 border-primary mb-3">
-                        <div class="card-body">
-
-                            <h5>Number of Tickets Assigned: <b>@Model.Count()</b></h5>
-
-                            <p>Y</p>
-                        </div>
-                    </div>
-                    <div class="card col m-1 p-2 border-primary mb-3">
-                        <div class="card-body">
-                            <ul class="list-unstyled">
-
-                                <li><strong>Priority:</strong> <span class="">  A</span></li>
-
-                                <li><strong>Date Created:</strong> <span class="">  B</</span></li>
-
-                                <li><strong>Scheduled Service For:</strong> <span class="">  C</</span></li>
-
-                                <li><strong>Address:</strong> <span class="">  D</span></li>
-                            </ul>
-                        </div>
-                    </div>*@
 
 <table class="table text-muted">
     <thead>
@@ -65,7 +43,7 @@
                 @Html.DisplayNameFor(model => model.CZip)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Created)
+                Updated
             </th>
             <th>
                 Scheduled For
@@ -126,10 +104,10 @@
         @Html.DisplayFor(modelItem => item.Priority.Name)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.Technician.AbvName)
+        @Html.DisplayFor(modelItem => item.Technician.FullName)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.Support.AbvName)
+        @Html.DisplayFor(modelItem => item.Support.FullName)
         </td>
         <td>
             <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning text-muted"><b>Select</b></button></a>   

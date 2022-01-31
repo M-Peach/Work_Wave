@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -19,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Work_Wave.Models;
+using Work_Wave.Services.Interfaces;
 
 namespace Work_Wave.Areas.Identity.Pages.Account
 {
@@ -30,13 +32,15 @@ namespace Work_Wave.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<WaveUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ITRolesService _rolesService;
 
         public RegisterModel(
             UserManager<WaveUser> userManager,
             IUserStore<WaveUser> userStore,
             SignInManager<WaveUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ITRolesService roleService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +48,7 @@ namespace Work_Wave.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _rolesService = roleService;
         }
 
         /// <summary>
@@ -94,6 +99,7 @@ namespace Work_Wave.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
         }
 
 
@@ -109,7 +115,8 @@ namespace Work_Wave.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new WaveUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName };
+
+                var user = new WaveUser { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName};
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -117,6 +124,8 @@ namespace Work_Wave.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _rolesService.AddUserToRoleAsync(user, "Not Verified");
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

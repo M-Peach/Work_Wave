@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,7 +27,9 @@ namespace Work_Wave.Controllers
             _ticketService = ticketService;
         }
 
+
         // GET: Tickets
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Tickets.Include(t => t.Priority).Include(t => t.Support).Include(t => t.Technician);
@@ -35,6 +38,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Tickets - MY TICKETS
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public async Task<IActionResult> MyTickets()
         {
             var applicationDbContext = _context.Tickets.Include(t => t.Priority).Include(t => t.Support).Include(t => t.Technician);
@@ -47,7 +51,6 @@ namespace Work_Wave.Controllers
             {
                 if (t.SupportId == user.Id)
                 {
-                    t.FormattedTime = t.Schedule.ToString("MM/dd/yyyy - H:mm EST");
 
                     tickets.Add(t);
                 }
@@ -59,15 +62,8 @@ namespace Work_Wave.Controllers
             return View(tickets);
         }
 
-        // GET: Tickets - ADMIN VIEW
-        public async Task<IActionResult> Admin()
-        {
-            var applicationDbContext = _context.Tickets.Include(t => t.Priority).Include(t => t.Support).Include(t => t.Technician);
-
-            return View(await applicationDbContext.ToListAsync());
-        }
-
         // GET: Tickets/Details/5
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -86,6 +82,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public async Task<IActionResult> Create()
         {
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name");
@@ -98,6 +95,7 @@ namespace Work_Wave.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public async Task<IActionResult> Create([Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CCity,CState,CZip,Created,Schedule,PriorityId,TechnicianId,SupportId")] Ticket ticket)
         {
             WaveUser user = await _userManager.GetUserAsync(User);
@@ -116,6 +114,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Tickets/Edit/5
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -139,7 +138,8 @@ namespace Work_Wave.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CCity,CState,CZip,Schedule,IsArchived,PriorityId,TechnicianId,SupportId")] Ticket ticket)
+        [Authorize(Roles = "Admin, Manager, Employee")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CCity,CState,CZip,Created,Schedule,IsArchived,PriorityId,TechnicianId,SupportId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -148,7 +148,10 @@ namespace Work_Wave.Controllers
 
                 try
                 {
+                    ticket.Created = DateTimeOffset.Now;
+
                     _context.Update(ticket);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -162,7 +165,7 @@ namespace Work_Wave.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MyTickets));
 
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
             ViewData["SupportId"] = new SelectList(_context.Users, "Id", "FullName", ticket.SupportId);
@@ -171,9 +174,11 @@ namespace Work_Wave.Controllers
         }
 
         // Ticket Comment
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Note")] Comment comment)
+        [Authorize(Roles = "Admin, Manager, Employee")]
+        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Note,UserId")] Comment comment)
         {
             comment.UserId = _userManager.GetUserId(User);
             comment.Created = DateTimeOffset.Now;
@@ -211,6 +216,7 @@ namespace Work_Wave.Controllers
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ticket = await _context.Tickets.FindAsync(id);
@@ -223,6 +229,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Tickets/Retore/5
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public async Task<IActionResult> Restore(int? id)
         {
             if (id == null)
@@ -246,6 +253,7 @@ namespace Work_Wave.Controllers
         // POST: Tickets/Restore/5
         [HttpPost, ActionName("Restore")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin, Manager, Employee")]
         public async Task<IActionResult> RestoreConfirmed(int id)
         {
             var ticket = await _context.Tickets.FindAsync(id);
