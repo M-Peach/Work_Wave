@@ -140,7 +140,7 @@ namespace Work_Wave.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CCity,CState,CZip,Schedule,IsArchived,PriorityId,TechnicianId,SupportId")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CFirstName,CLastName,CPhone,CAddress,CCity,CState,CZip,Created,Schedule,IsArchived,PriorityId,TechnicianId,SupportId")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -149,7 +149,10 @@ namespace Work_Wave.Controllers
 
                 try
                 {
+                    ticket.Created = DateTimeOffset.Now;
+
                     _context.Update(ticket);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -163,7 +166,7 @@ namespace Work_Wave.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(MyTickets));
 
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);
             ViewData["SupportId"] = new SelectList(_context.Users, "Id", "FullName", ticket.SupportId);
@@ -172,10 +175,11 @@ namespace Work_Wave.Controllers
         }
 
         // Ticket Comment
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin, Manager, Employee")]
-        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Note")] Comment comment)
+        public async Task<IActionResult> AddTicketComment([Bind("Id,TicketId,Note,UserId")] Comment comment)
         {
             comment.UserId = _userManager.GetUserId(User);
             comment.Created = DateTimeOffset.Now;
