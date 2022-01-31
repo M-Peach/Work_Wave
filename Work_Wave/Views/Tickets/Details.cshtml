@@ -15,9 +15,8 @@
             <div class="col-md-12 col">
                 <div class="row col-cols-2 mt-5">
                         <div style='text-align:right'>
-        <a asp-action="MyTickets"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Directions</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
-    </div>
-    
+                            <a asp-action="MyTickets"><button type="button" class="btn btn-primary">Back to List</button></a>     <a asp-action="Edit" asp-route-id="@Model?.Id"><button type="button" class="btn btn-primary">Edit</button></a>     <a href='@Model.AddressLink' method="get" target="_blank"><button type="button" class="btn btn-info">Directions</button></a>     <a asp-action="Delete" asp-route-id="@Model?.Id"><button type="button" class="btn btn-danger">Archive</button></a>
+                        </div>
                     <div class="card col m-1 p-2 border-primary mb-3">
                         <div class="card-body">
                             @*Title of Ticket*@
@@ -42,52 +41,45 @@
                     </div>
                 </div>
             </div>
-             </div>
-              </div>
-               </div>
-
-
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">Comments</div>
-                <div class="card-body">
-                    <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
-                        <input type="hidden" asp-for="Id" name="TicketId" />
-                        @if(Model.TechnicianId == waveUser.Id || Model.SupportId == waveUser.Id)
-                        {
-                        <div class="form-group">
-                            <textarea asp-for="@(new Comment().Note)" rows="4" class="form-control" required placeholder="Add Comment ..."></textarea>
-                        </div>
-                        <hr style="width:0%; text-align:left;margin-left:0">
-                            <button class="btn btn-warning text-muted"><b>Submit</b></button>
-                        <hr style="width:0%; text-align:left;margin-left:0">
-                        }
-                        else
-                        {
-                        <div class="form-group">
-                            <textarea disabled asp-for="@(new Comment().Note)" rows="4" class="form-control" required placeholder="Add Comment ..."></textarea>
-                       </div>
-                        }
-                    </form>
-                    <h4 class="card-title, text-muted">Comments</h4>
-                    <hr style="width:0%; text-align:left;margin-left:0">
-                    @foreach(Comment comment in Model.Comments)
-                    {
-            
-                            <div>
-                            <span class="text-muted">
-                            @comment.User.FullName
-                            <small class="float-right">@comment.Created.ToString("MM/dd/yyyy - H:mm")</small>
-                            </span>
-                            <div>
-                            <span class ="text-muted"><b>@Html.Raw(comment.Note)</b></span>
-                            </div> 
-                            <hr>
-                            </div>
-                  }
-                </div>
-            </div>
-
-            <div class="card-footer">
-            </div>
-
         </div>
+    </div>
+</div>
+<div class="card text-white bg-primary mb-3">
+    <div class="card-header">Comments</div>
+        <div class="card-body">
+            <form asp-action="AddTicketComment" asp-controller="Tickets" method="post">
+                <input type="hidden" asp-for="Id" name="TicketId" />
+                @if(Model.TechnicianId == waveUser.Id || Model.SupportId == waveUser.Id)
+                {
+                <div class="form-group">
+                    <textarea asp-for="@(new Comment().Note)" rows="4" class="form-control" required placeholder="Add Comment ..."></textarea>
+                </div>
+                <hr style="width:0%; text-align:left;margin-left:0">
+                    <button class="btn btn-warning text-muted"><b>Submit</b></button>
+                <hr style="width:0%; text-align:left;margin-left:0">
+                }
+                else
+                {
+                 <div class="form-group">
+                    <textarea disabled asp-for="@(new Comment().Note)" rows="4" class="form-control" required placeholder="Add Comment ..."></textarea>
+                 </div>
+                }
+                </form>
+                <h4 class="card-title, text-muted">Comments</h4>
+                <hr style="width:0%; text-align:left;margin-left:0">
+                @foreach(Comment comment in Model.Comments)
+                {
+                    <div>
+                    <span class="text-muted">
+                    @comment.User.FullName
+                    <small class="float-right">@comment.Created.ToString("MM/dd/yyyy - H:mm")</small>
+                    </span>
+                    <div>
+                    <span class ="text-muted"><b>@Html.Raw(comment.Note)</b></span>
+                    </div> 
+                    <hr>
+                    </div>
+                }
+        </div>
+    </div>    
+</div>

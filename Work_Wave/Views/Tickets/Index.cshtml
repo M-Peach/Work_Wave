@@ -10,11 +10,12 @@
             <div class="col-md-12 col">
                 <div class="row col-cols-2 mt-5">
                     <h1>All Tickets</h1>
-                                                <div style='text-align:right'>
-                                    <a asp-action="Create"><button type="button" class="btn btn-primary text-muted"><b>Create New Ticket</b></button></a>
-                                    <hr style="width:0%; text-align:left;margin-left:0">
-                                    <h5>Total Number of Tickets: @Model.Count()</h5>
-                                    </div>
+                        <div style='text-align:right'>
+                            <a asp-action="Create"><button type="button" class="btn btn-primary text-muted"><b>Create New Ticket</b></button></a>
+                            <hr style="width:0%; text-align:left;margin-left:0">
+                            <h5>Total Number of Tickets: @Model.Count()</h5>
+                        </div>
+
 <table class="table text-muted">
     <thead>
         <tr  class="table-primary">
@@ -51,10 +52,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Support)
             </th>
-            <th></th>
         </tr>
     </thead>
-    <tbody>
+<tbody>
         
 @foreach (var item in Model) {
  
@@ -97,17 +97,14 @@
             <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
             @if(@item.IsArchived)
             {
-                            
-                            <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
-                        }
-                        else
-                        {
-                            <a asp-action="Delete" asp-route-id="@item.Id">Archive</a>
-                        }
-
+                <a asp-action="Restore" asp-route-id="@item.Id">Restore</a>
+            }
+            else
+            {
+                <a asp-action="Delete" asp-route-id="@item.Id">Archive</a>
+            }
         </td>
      </tr>
-   }
-
+        }
     </tbody>
-</table>
+  </table>
