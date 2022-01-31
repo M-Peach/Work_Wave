@@ -68,7 +68,7 @@ namespace Work_Wave.Models
 
         [NotMapped]
         [Display(Name = "Formatted Time")]
-        public string FormattedTime { get; set; }
+        public string FormattedTime { get { return Schedule.ToString("MM/dd/yy H:mm EST"); } }
 
 
         // Below Referances Priority, Status, Comment

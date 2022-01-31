@@ -13,6 +13,7 @@
                                                 <div style='text-align:right'>
                                     <a asp-action="Create"><button type="button" class="btn btn-primary text-muted"><b>Create New Ticket</b></button></a>
                                     <hr style="width:0%; text-align:left;margin-left:0">
+                                    <h5>Total Number of Tickets: @Model.Count()</h5>
                                     </div>
 <table class="table text-muted">
     <thead>
@@ -54,8 +55,10 @@
         </tr>
     </thead>
     <tbody>
+        
 @foreach (var item in Model) {
-    <tr>
+ 
+        <tr>
         <td>
         @Html.DisplayFor(modelItem => item.Title)
         </td>

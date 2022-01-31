@@ -51,7 +51,6 @@ namespace Work_Wave.Controllers
             {
                 if (t.SupportId == user.Id)
                 {
-                    t.FormattedTime = t.Schedule.ToString("MM/dd/yyyy - H:mm EST");
 
                     tickets.Add(t);
                 }
