@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Work_Wave.Models;
+using Work_Wave.Services.Interfaces;
 
 namespace Work_Wave.Areas.Identity.Pages.Account
 {
@@ -31,13 +32,15 @@ namespace Work_Wave.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<WaveUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ITRolesService _rolesService;
 
         public RegisterModel(
             UserManager<WaveUser> userManager,
             IUserStore<WaveUser> userStore,
             SignInManager<WaveUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ITRolesService roleService)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +48,7 @@ namespace Work_Wave.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _rolesService = roleService;
         }
 
         /// <summary>
@@ -120,6 +124,8 @@ namespace Work_Wave.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    await _rolesService.AddUserToRoleAsync(user, "Not Verified");
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

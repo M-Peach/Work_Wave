@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Comments
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Comments.Include(c => c.Ticket).Include(c => c.User);
@@ -28,6 +30,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Comments/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,6 +51,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Comments/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "CAddress");
@@ -60,6 +64,7 @@ namespace Work_Wave.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("Id,TicketId,Note,Created,UserId")] Comment comment)
         {
             if (ModelState.IsValid)
@@ -74,6 +79,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Comments/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,6 +102,7 @@ namespace Work_Wave.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,TicketId,Note,Created,UserId")] Comment comment)
         {
             if (id != comment.Id)
@@ -129,6 +136,7 @@ namespace Work_Wave.Controllers
         }
 
         // GET: Comments/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -151,6 +159,7 @@ namespace Work_Wave.Controllers
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var comment = await _context.Comments.FindAsync(id);
