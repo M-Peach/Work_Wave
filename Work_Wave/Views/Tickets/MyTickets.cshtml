@@ -126,10 +126,10 @@
         @Html.DisplayFor(modelItem => item.Priority.Name)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.Technician.AbvName)
+        @Html.DisplayFor(modelItem => item.Technician.FullName)
         </td>
         <td>
-        @Html.DisplayFor(modelItem => item.Support.AbvName)
+        @Html.DisplayFor(modelItem => item.Support.FullName)
         </td>
         <td>
             <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning text-muted"><b>Select</b></button></a>   

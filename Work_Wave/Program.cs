@@ -22,6 +22,8 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddScoped<ITTicketService, TicketService>();
 
+builder.Services.AddScoped<ITRolesService, RolesService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
