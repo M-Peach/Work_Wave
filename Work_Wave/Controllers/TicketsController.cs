@@ -165,6 +165,15 @@ namespace Work_Wave.Controllers
                         throw;
                     }
                 }
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else if ((User.IsInRole("Manager")))
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            else
                 return RedirectToAction(nameof(MyTickets));
 
             ViewData["PriorityId"] = new SelectList(_context.Priorities, "Id", "Name", ticket.PriorityId);

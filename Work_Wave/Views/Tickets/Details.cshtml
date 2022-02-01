@@ -36,6 +36,10 @@
                                 <li><strong>Scheduled Service For:</strong> <span class="">  @Model.Schedule.ToString("MMM dd, yyyy - H:mm EST")</</span></li>
                                 @*Address*@
                                 <li><strong>Address:</strong> <span class="">  @Model.CAddress @Model.CCity, @Model.CState, @Model.CZip</span></li>
+                                @*Tech*@
+                                <li><strong>Assigned Technician:</strong> <span class="">  @Model.Technician.FullName</span></li>
+                                @*Support*@
+                                <li><strong>Technical Support:</strong> <span class="">  @Model.Support.FullName</span></li>
                             </ul>
                         </div>
                     </div>

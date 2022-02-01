@@ -55,61 +55,62 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Support)
                             </th>
+                            <th></th>
                          </tr>
                      </thead>
                   <tbody>
+
+                @foreach (var item in Model) {
+
+                    if (item.IsArchived == false)
+                    {
+                            <tr>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CFirstName)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CLastName)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CAddress)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CCity)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CState)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.CZip)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Created)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.FormattedTime)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Priority.Name)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Technician.FullName)
+                            </td>
+                            <td>
+                            @Html.DisplayFor(modelItem => item.Support.FullName)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning text-muted"><b>Select</b></button></a>   
+                            </td>
+                        </tr>
+                    }
+                }
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@foreach (var item in Model) {
-
-  if (item.IsArchived == false)
-  {
-        <tr>
-        <td>
-        @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.CFirstName)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.CLastName)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.CAddress)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.CCity)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.CState)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.CZip)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.FormattedTime)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.Priority.Name)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.Technician.FullName)
-        </td>
-        <td>
-        @Html.DisplayFor(modelItem => item.Support.FullName)
-        </td>
-        <td>
-            <a asp-action="Details" asp-route-id="@item.Id"><button type="button" class="btn btn-warning text-muted"><b>Select</b></button></a>   
-        </td>
-     </tr>
-   }
-}
-    </tbody>
-</table>
